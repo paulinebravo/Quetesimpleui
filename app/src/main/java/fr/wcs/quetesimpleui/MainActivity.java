@@ -3,25 +3,17 @@ package fr.wcs.quetesimpleui;
 import android.app.Activity;
 
 import android.content.Context;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
-
-    EditText Name;
-    EditText Surname;
-    CheckBox checkBox;
-    Button button;
-    EditText congrats;
-
-
 
 
     @Override
@@ -29,12 +21,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main) ;
 
-        Name = (EditText) findViewById(R.id.Name);
-        Surname = (EditText) findViewById(R.id.Surname);
-        checkBox = (CheckBox) findViewById(R.id.checkBox);
-        button = (Button) findViewById(R.id.button);
-        congrats= (EditText) findViewById(R.id.congrats);
+        final EditText Name = (EditText) findViewById(R.id.Name);
+        final EditText Surname = (EditText) findViewById(R.id.Surname);
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
+        final Button button = (Button) findViewById(R.id.button);
+        final TextView congrats= (TextView) findViewById(R.id.congrats);
 
+        congrats.setVisibility(View.INVISIBLE);
+        button.setEnabled (false);
 
         checkBox .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -42,40 +36,54 @@ public class MainActivity extends Activity {
 
                 Name.setEnabled(checkBox.isChecked());
                 Surname.setEnabled(checkBox.isChecked());
+                button.setEnabled(checkBox.isChecked());
 
-        button .setOnClickListener(new View.OnClickListener() {
+            if (!isChecked) {
+
+            Name.setText(null);
+            Surname.setText(null);
+            congrats.setVisibility(View.INVISIBLE);
+
+        }
+
+                button .setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Surname.getText().toString();
-                Name.getText().toString();
+            public void onClick(View v)
 
-                if (Surname.length()!=0 && Name.length()!=0) {
-                congrats.setText("Félicitations !"+Name .getText()+" "+Surname.getText());
-                    congrats.setVisibility(View.VISIBLE);
+            {
+
+
+                if (Surname.length()==0 || Name.length()==0)
+                {
+
+
+                    Context context = getApplicationContext();
+                    CharSequence text = getString(R.string.Toast);
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    congrats.setVisibility(View.INVISIBLE);
+
                 }
 
         else
 
-                { Context context = getApplicationContext();
-                CharSequence text = "Tu dois renseigner le nom et le prénom!";
-                int duration = Toast.LENGTH_SHORT;
+                { congrats.setText(getString(R.string.congrats)+" "+Name.getText()+ " "+Surname.getText());
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
-
+                    congrats.setVisibility(View.VISIBLE);
+                }
             }
-        };
 
-            });
+                    });
 
 
-        }
-
+                }
 
 
 
-    });
+
+        } ) ;
 
     }
 

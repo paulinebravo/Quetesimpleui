@@ -3,4 +3,7 @@
     <string name="Name">Prénom</string>
     <string name="Surname">Nom</string>
     <string name="congrats">Félicitations !</string>
+    <string name="checkBox"></string>
+    <string name="Toast">Tu dois renseigner le nom et le prénom !</string>
+
 </resources>
